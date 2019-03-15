@@ -1,4 +1,7 @@
+import numpy as np
+
 def binary_classification_metrics(prediction, ground_truth):
+
     '''
     Computes metrics for binary classification
 
@@ -9,10 +12,18 @@ def binary_classification_metrics(prediction, ground_truth):
     Returns:
     precision, recall, f1, accuracy - classification metrics
     '''
-    precision = 0
-    recall = 0
-    accuracy = 0
-    f1 = 0
+    positive_pred = prediction == 1
+    negative_pred = prediction == 0
+    
+    tp_rate = np.count_nonzero(ground_truth[positive_pred])
+    fn_rate = np.count_nonzero(ground_truth[negative_pred])
+    tn_rate = ground_truth[negative_pred].shape[0] - fn_rate
+    fp_rate = ground_truth[positive_pred].shape[0] - tp_rate
+    
+    precision = tp_rate / (tp_rate + fp_rate) 
+    recall = tp_rate / (tp_rate + fn_rate) 
+    accuracy = (tp_rate + tn_rate) / (tp_rate + tn_rate + fp_rate + fn_rate)
+    f1 = 2 * precision * recall / (precision + recall) 
 
     # TODO: implement metrics!
     # Some helpful links:
