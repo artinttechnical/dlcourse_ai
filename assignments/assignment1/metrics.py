@@ -14,7 +14,7 @@ def binary_classification_metrics(prediction, ground_truth):
     '''
     positive_pred = prediction == 1
     negative_pred = prediction == 0
-    
+   
     tp_rate = np.count_nonzero(ground_truth[positive_pred])
     fn_rate = np.count_nonzero(ground_truth[negative_pred])
     tn_rate = ground_truth[negative_pred].shape[0] - fn_rate
