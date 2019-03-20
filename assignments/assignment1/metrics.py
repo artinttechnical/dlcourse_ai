@@ -49,7 +49,7 @@ def multiclass_accuracy(prediction, ground_truth):
     accuracy - ratio of accurate predictions to total samples
     '''
     # TODO: Implement computing accuracy
-    print("Pred ", prediction)
-    print("Truth ", ground_truth)
+    #print("Pred ", prediction)
+    #print("Truth ", ground_truth)
     return np.count_nonzero(np.equal(prediction, ground_truth)) / prediction.shape[0]
     return 0

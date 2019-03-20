@@ -149,12 +149,6 @@ class KNN:
             voters_list = self.train_y[sorted_distance_indices[:self.k]]
             voters = np.unique(voters_list, return_counts = True)
             pred[i] = voters[0][np.argmax(voters[1])]
-            if i == 0:
-                print("Dist ", dists[i])
-                print("Sorted indices ", sorted_distance_indices)
-                print("Voters list ", voters_list)
-                print("Train_y ", self.train_y)
-                print("Prediction ", pred[i])
             # TODO: Implement choosing best class based on k
             # nearest training samples
             pass
