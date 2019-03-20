@@ -21,7 +21,7 @@ def binary_classification_metrics(prediction, ground_truth):
     tn_rate = ground_truth[negative_pred].shape[0] - fn_rate
     fp_rate = ground_truth[positive_pred].shape[0] - tp_rate
 
-    print(tp_rate, fn_rate, tn_rate, fp_rate)
+    #print(tp_rate, fn_rate, tn_rate, fp_rate)
     
     precision = tp_rate / (tp_rate + fp_rate) if tp_rate + fp_rate > 0 else 0
     recall = tp_rate / (tp_rate + fn_rate) if tp_rate + fn_rate > 0 else 0 
