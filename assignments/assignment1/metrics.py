@@ -14,16 +14,20 @@ def binary_classification_metrics(prediction, ground_truth):
     '''
     positive_pred = prediction == 1
     negative_pred = prediction == 0
+    #print(prediction, "\n", ground_truth)
    
     tp_rate = np.count_nonzero(ground_truth[positive_pred])
     fn_rate = np.count_nonzero(ground_truth[negative_pred])
     tn_rate = ground_truth[negative_pred].shape[0] - fn_rate
     fp_rate = ground_truth[positive_pred].shape[0] - tp_rate
+
+    print(tp_rate, fn_rate, tn_rate, fp_rate)
     
-    precision = tp_rate / (tp_rate + fp_rate) 
-    recall = tp_rate / (tp_rate + fn_rate) 
+    precision = tp_rate / (tp_rate + fp_rate) if tp_rate + fp_rate > 0 else 0
+    recall = tp_rate / (tp_rate + fn_rate) if tp_rate + fn_rate > 0 else 0 
     accuracy = (tp_rate + tn_rate) / (tp_rate + tn_rate + fp_rate + fn_rate)
-    f1 = 2 * precision * recall / (precision + recall) 
+    f1 = 2 * precision * recall / (precision + recall) if tp_rate != 0 else 0
+    #print(f1)
 
     # TODO: implement metrics!
     # Some helpful links:
@@ -45,4 +49,7 @@ def multiclass_accuracy(prediction, ground_truth):
     accuracy - ratio of accurate predictions to total samples
     '''
     # TODO: Implement computing accuracy
+    print("Pred ", prediction)
+    print("Truth ", ground_truth)
+    return np.count_nonzero(np.equal(prediction, ground_truth)) / prediction.shape[0]
     return 0
