@@ -16,10 +16,16 @@ def softmax(predictions):
     # TODO implement softmax
     # Your final implementation shouldn't have any loops
     predictions_limited = predictions.copy()
-    predictions_limited -= np.max(predictions)
+    if len(predictions.shape) == 2:
+        predictions_limited -= np.amax(predictions, axis = 1)[:, np.newaxis]
+    else:
+        predictions_limited -= np.max(predictions)
     exps = np.exp(predictions_limited)
-    return exps / np.sum(exps)
-
+    if len(predictions.shape) == 2:
+        return exps / np.sum(exps, axis = 1)[:, np.newaxis]
+    else:
+        return exps / np.sum(exps)
+    
 def cross_entropy_loss(probs, target_index):
     '''
     Computes cross-entropy loss
@@ -36,7 +42,7 @@ def cross_entropy_loss(probs, target_index):
     # TODO implement cross-entropy
     # Your final implementation shouldn't have any loops
     if len(probs.shape) == 2:
-        return -np.sum(np.log(probs[np.arange(probs.shape[0]), target_index]))
+        return -np.sum(np.log(probs[np.arange(probs.shape[0]), target_index.T])) / probs.shape[0]
     else:
         return -np.log(probs[target_index])
 
@@ -62,10 +68,10 @@ def softmax_with_cross_entropy(predictions, target_index):
     loss = cross_entropy_loss(probabilities, target_index)
     dprediction = probabilities
     if len(predictions.shape) > 1:
-        dprediction[np.arange(predictions.shape[0]), target_index] -= 1
+        dprediction[np.arange(predictions.shape[0]), target_index.T] -= 1
+        dprediction /= predictions.shape[0]
     else:
         dprediction[target_index] -= 1
-
     return loss, dprediction
 
 
