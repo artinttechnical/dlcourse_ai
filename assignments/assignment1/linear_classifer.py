@@ -42,7 +42,8 @@ def cross_entropy_loss(probs, target_index):
     # TODO implement cross-entropy
     # Your final implementation shouldn't have any loops
     if len(probs.shape) == 2:
-        return -np.sum(np.log(probs[np.arange(probs.shape[0]), target_index.T])) / probs.shape[0]
+        return -np.mean(np.log(probs[np.arange(probs.shape[0]), target_index.T]))
+        #return -np.sum(np.log(probs[np.arange(probs.shape[0]), target_index.T])) / probs.shape[0]
     else:
         return -np.log(probs[target_index])
 
@@ -113,7 +114,14 @@ def linear_softmax(X, W, target_index):
 
     # TODO implement prediction and gradient over W
     # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    loss, gradient = softmax_with_cross_entropy(predictions, target_index)
+    #print("X\n", X)
+    #print("W\n", W)
+    #print("Grad\n", gradient)
+    dW = np.zeros_like(W)
+    for i in range(W.shape[0]):
+        for j in range(W.shape[1]):
+            dW[i, j] = np.sum(X[:, i] * gradient[:, j])
     
     return loss, dW
 
