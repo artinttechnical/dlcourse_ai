@@ -91,7 +91,8 @@ def l2_regularization(W, reg_strength):
 
     # TODO: implement l2 regularization and gradient
     # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    loss = np.sum(W * W) * reg_strength
+    grad = reg_strength * 2 * W
 
     return loss, grad
     
@@ -115,13 +116,7 @@ def linear_softmax(X, W, target_index):
     # TODO implement prediction and gradient over W
     # Your final implementation shouldn't have any loops
     loss, gradient = softmax_with_cross_entropy(predictions, target_index)
-    #print("X\n", X)
-    #print("W\n", W)
-    #print("Grad\n", gradient)
-    dW = np.zeros_like(W)
-    for i in range(W.shape[0]):
-        for j in range(W.shape[1]):
-            dW[i, j] = np.sum(X[:, i] * gradient[:, j])
+    dW = np.dot(X.T, gradient)
     
     return loss, dW
 
