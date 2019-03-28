@@ -58,7 +58,12 @@ class ReLULayer:
         # TODO: Implement forward pass
         # Hint: you'll need to save some information about X
         # to use it later in the backward pass
-        raise Exception("Not implemented!")
+        positive_X = X > 0
+        self.dX = np.zeros_like(X)
+        self.dX[positive_X] = 1
+        result = np.zeros_like(X)
+        result[positive_X] = X[positive_X]
+        return result 
 
     def backward(self, d_out):
         """
@@ -74,7 +79,7 @@ class ReLULayer:
         """
         # TODO: Implement backward pass
         # Your final implementation shouldn't have any loops
-        raise Exception("Not implemented!")
+        d_result = self.dX
         return d_result
 
     def params(self):
