@@ -58,12 +58,8 @@ class ReLULayer:
         # TODO: Implement forward pass
         # Hint: you'll need to save some information about X
         # to use it later in the backward pass
-        positive_X = X > 0
-        self.dX = np.zeros_like(X)
-        self.dX[positive_X] = 1
-        result = np.zeros_like(X)
-        result[positive_X] = X[positive_X]
-        return result 
+        self.derivative = np.array(X > 0).astype(int)
+        return np.maximum(X, 0) 
 
     def backward(self, d_out):
         """
@@ -79,7 +75,7 @@ class ReLULayer:
         """
         # TODO: Implement backward pass
         # Your final implementation shouldn't have any loops
-        d_result = self.dX
+        d_result = d_out * self.derivative
         return d_result
 
     def params(self):
