@@ -14,7 +14,9 @@ def l2_regularization(W, reg_strength):
       gradient, np.array same shape as W - gradient of weight by l2 loss
     """
     # TODO: Copy from the previous assignment
-    raise Exception("Not implemented!")
+    loss = np.sum(W * W) * reg_strength
+    grad = reg_strength * 2 * W
+
     return loss, grad
 
 
@@ -34,7 +36,14 @@ def softmax_with_cross_entropy(preds, target_index):
       dprediction, np array same shape as predictions - gradient of predictions by loss value
     """
     # TODO: Copy from the previous assignment
-    raise Exception("Not implemented!")
+    probabilities = softmax(preds)
+    loss = cross_entropy_loss(probabilities, target_index)
+    dprediction = probabilities
+    if len(predictions.shape) > 1:
+        dprediction[np.arange(preds.shape[0]), target_index.T] -= 1
+        dprediction /= predictions.shape[0]
+    else:
+        dprediction[target_index] -= 1
 
     return loss, d_preds
 
