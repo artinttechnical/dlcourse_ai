@@ -115,7 +115,7 @@ class FullyConnectedLayer:
 
         # It should be pretty similar to linear classifier from
         # the previous assignment
-       
+        d_input = np.dot(d_out, self.W.value.T)
 
         return d_input
 
