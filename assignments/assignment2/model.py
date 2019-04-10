@@ -1,6 +1,7 @@
 import numpy as np
 
 from layers import FullyConnectedLayer, ReLULayer, softmax_with_cross_entropy, l2_regularization
+import layers
 
 
 class TwoLayerNet:
@@ -38,7 +39,7 @@ class TwoLayerNet:
         # Hint: using self.params() might be useful!
         for layer in self.layers:
             for param in layer.params():
-                param = Param()
+                layer.params()[param] = layers.Param(param)
         
         # TODO Compute loss and fill param gradients
         # by running forward and backward passes through the model
@@ -46,12 +47,14 @@ class TwoLayerNet:
         # After that, implement l2 regularization on all params
         # Hint: self.params() is useful again!
         X_in = X
-        for layer in self.layers():
+        for layer in self.layers:
             X_in = layer.forward(X_in)
         loss, deriv = softmax_with_cross_entropy(X_in, y)
         
-        for layer in self.layers.reverse():
-            deriv = layer.backward(
+        rev_layers = self.layers.copy()
+        rev_layers.reverse()
+        for layer in rev_layers:
+            deriv = layer.backward(deriv)
 
         return loss
 
