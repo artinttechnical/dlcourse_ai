@@ -18,7 +18,10 @@ class TwoLayerNet:
         """
         self.reg = reg
         # TODO Create necessary layers
-        raise Exception("Not implemented!")
+        self.layers = []
+        self.layers.append(FullyConnectedLayer(n_input, hidden_layer_size))
+        self.layers.append(ReLULayer())
+        self.layers.append(FullyConnectedLayer(hidden_layer_size, n_output))
 
     def compute_loss_and_gradients(self, X, y):
         """
@@ -33,14 +36,22 @@ class TwoLayerNet:
         # clear parameter gradients aggregated from the previous pass
         # TODO Set parameter gradient to zeros
         # Hint: using self.params() might be useful!
-        raise Exception("Not implemented!")
+        for layer in self.layers:
+            for param in layer.params():
+                param = Param()
         
         # TODO Compute loss and fill param gradients
         # by running forward and backward passes through the model
 
         # After that, implement l2 regularization on all params
         # Hint: self.params() is useful again!
-        raise Exception("Not implemented!")
+        X_in = X
+        for layer in self.layers():
+            X_in = layer.forward(X_in)
+        loss, deriv = softmax_with_cross_entropy(X_in, y)
+        
+        for layer in self.layers.reverse():
+            deriv = layer.backward(
 
         return loss
 
