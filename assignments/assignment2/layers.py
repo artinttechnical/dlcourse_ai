@@ -19,6 +19,52 @@ def l2_regularization(W, reg_strength):
 
     return loss, grad
 
+def softmax(predictions):
+    '''
+    Computes probabilities from scores
+
+    Arguments:
+      predictions, np array, shape is either (N) or (batch_size, N) -
+        classifier output
+
+    Returns:
+      probs, np array of the same shape as predictions - 
+        probability for every class, 0..1
+    '''
+    # TODO implement softmax
+    # Your final implementation shouldn't have any loops
+    predictions_limited = predictions.copy()
+    if len(predictions.shape) == 2:
+        predictions_limited -= np.amax(predictions, axis = 1)[:, np.newaxis]
+    else:
+        predictions_limited -= np.max(predictions)
+    exps = np.exp(predictions_limited)
+    if len(predictions.shape) == 2:
+        return exps / np.sum(exps, axis = 1)[:, np.newaxis]
+    else:
+        return exps / np.sum(exps)
+
+def cross_entropy_loss(probs, target_index):
+    '''
+    Computes cross-entropy loss
+
+    Arguments:
+      probs, np array, shape is either (N) or (batch_size, N) -
+        probabilities for every class
+      target_index: np array of int, shape is (1) or (batch_size) -
+        index of the true class for given sample(s)
+
+    Returns:
+      loss: single value
+    '''
+    # TODO implement cross-entropy
+    # Your final implementation shouldn't have any loops
+    if len(probs.shape) == 2:
+        return -np.mean(np.log(probs[np.arange(probs.shape[0]), target_index.T]))
+        #return -np.sum(np.log(probs[np.arange(probs.shape[0]), target_index.T])) / probs.shape[0]
+    else:
+        return -np.log(probs[target_index])
+
 
 def softmax_with_cross_entropy(preds, target_index):
     """
@@ -38,12 +84,12 @@ def softmax_with_cross_entropy(preds, target_index):
     # TODO: Copy from the previous assignment
     probabilities = softmax(preds)
     loss = cross_entropy_loss(probabilities, target_index)
-    dprediction = probabilities
+    d_preds = probabilities
     if len(predictions.shape) > 1:
-        dprediction[np.arange(preds.shape[0]), target_index.T] -= 1
-        dprediction /= predictions.shape[0]
+        d_preds[np.arange(preds.shape[0]), target_index.T] -= 1
+        d_preds /= predictions.shape[0]
     else:
-        dprediction[target_index] -= 1
+        d_preds[target_index] -= 1
 
     return loss, d_preds
 
