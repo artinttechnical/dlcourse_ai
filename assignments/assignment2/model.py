@@ -49,12 +49,16 @@ class TwoLayerNet:
         X_in = X
         for layer in self.layers:
             X_in = layer.forward(X_in)
+            for param in layer.params():
+                X_in += self.reg * np.sum(np.power(layer[param], 2), axis = 1) / 2
         loss, deriv = softmax_with_cross_entropy(X_in, y)
         
         rev_layers = self.layers.copy()
         rev_layers.reverse()
         for layer in rev_layers:
             deriv = layer.backward(deriv)
+            for param in layer.params():
+                deriv += np.sum(layer[param]), axis = 1)
 
         return loss
 
