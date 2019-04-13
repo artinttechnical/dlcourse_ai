@@ -173,7 +173,7 @@ class FullyConnectedLayer:
         # the previous assignment
         self.W.grad = np.dot(self.X.T, d_out)
         d_input = np.dot(d_out, self.W.value.T)
-        self.W.value -= self.W.grad
+        #self.W.value -= self.W.grad
 
         return d_input
 
