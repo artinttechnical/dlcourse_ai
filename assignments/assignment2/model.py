@@ -50,7 +50,7 @@ class TwoLayerNet:
         for layer in self.layers:
             X_in = layer.forward(X_in)
             for param in layer.params():
-                X_in += self.reg * np.sum(np.power(layer[param], 2), axis = 1) / 2
+                X_in += self.reg * np.sum(layer.params()[param].value ** 2, axis = 0) / 2
         loss, deriv = softmax_with_cross_entropy(X_in, y)
         
         rev_layers = self.layers.copy()
@@ -58,7 +58,10 @@ class TwoLayerNet:
         for layer in rev_layers:
             deriv = layer.backward(deriv)
             for param in layer.params():
-                deriv += np.sum(layer[param]), axis = 1)
+                regul = np.sum(layer.params()[param].value, axis = 0)
+                print(regul.shape)
+                print(deriv.shape)
+                deriv += regul
 
         return loss
 
@@ -84,7 +87,8 @@ class TwoLayerNet:
         result = {}
 
         # TODO Implement aggregating all of the params
-
-        raise Exception("Not implemented!")
+        for layer in self.layers():
+            for param in layer.params():
+                result[str(layer) + param] = layer.params()[param]
 
         return result

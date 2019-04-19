@@ -85,9 +85,9 @@ def softmax_with_cross_entropy(preds, target_index):
     probabilities = softmax(preds)
     loss = cross_entropy_loss(probabilities, target_index)
     d_preds = probabilities
-    if len(predictions.shape) > 1:
+    if len(preds.shape) > 1:
         d_preds[np.arange(preds.shape[0]), target_index.T] -= 1
-        d_preds /= predictions.shape[0]
+        d_preds /= preds.shape[0]
     else:
         d_preds[target_index] -= 1
 
